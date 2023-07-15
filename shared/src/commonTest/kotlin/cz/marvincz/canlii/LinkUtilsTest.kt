@@ -1,6 +1,6 @@
 package cz.marvincz.canlii
 
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LinkUtilsTest {

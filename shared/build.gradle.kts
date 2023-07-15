@@ -29,10 +29,6 @@ kotlin {
 //            baseName = "shared"
 //        }
 //    }
-//    js(IR) {
-//        nodejs()
-//        binaries.library()
-//    }
 
     sourceSets {
         val ktorVersion = "2.3.2"
@@ -95,11 +91,6 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
             }
         }
-//        val jsMain by getting {
-//            dependencies {
-//                implementation("io.ktor:ktor-client-js:$ktorVersion")
-//            }
-//        }
     }
 }
 
