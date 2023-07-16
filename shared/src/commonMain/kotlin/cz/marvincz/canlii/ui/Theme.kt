@@ -3,8 +3,8 @@ package cz.marvincz.canlii.ui
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 
@@ -77,24 +77,25 @@ private val DarkColors = darkColorScheme(
 @Composable
 private fun typography(): Typography {
     val typography = MaterialTheme.typography
-    val fontFamily = FontFamily.Serif
+    val serif = FontFamily.Serif
+    val sansSerif = FontFamily.SansSerif
 
     return Typography(
-        displayLarge = typography.displayLarge.copy(fontFamily = fontFamily),
-        displayMedium = typography.displayMedium.copy(fontFamily = fontFamily),
-        displaySmall = typography.displaySmall.copy(fontFamily = fontFamily),
-        headlineLarge = typography.headlineLarge.copy(fontFamily = fontFamily),
-        headlineMedium = typography.headlineMedium.copy(fontFamily = fontFamily),
-        headlineSmall = typography.headlineSmall.copy(fontFamily = fontFamily),
-        titleLarge = typography.titleLarge.copy(fontFamily = fontFamily),
-        titleMedium = typography.titleMedium.copy(fontFamily = fontFamily),
-        titleSmall = typography.titleSmall.copy(fontFamily = fontFamily),
-        bodyLarge = typography.bodyLarge.copy(fontFamily = fontFamily),
-        bodyMedium = typography.bodyMedium.copy(fontFamily = fontFamily),
-        bodySmall = typography.bodySmall.copy(fontFamily = fontFamily),
-        labelLarge = typography.labelLarge.copy(fontFamily = fontFamily),
-        labelMedium = typography.labelMedium.copy(fontFamily = fontFamily),
-        labelSmall = typography.labelSmall.copy(fontFamily = fontFamily),
+        displayLarge = typography.displayLarge.copy(fontFamily = serif),
+        displayMedium = typography.displayMedium.copy(fontFamily = serif),
+        displaySmall = typography.displaySmall.copy(fontFamily = serif),
+        headlineLarge = typography.headlineLarge.copy(fontFamily = serif),
+        headlineMedium = typography.headlineMedium.copy(fontFamily = serif),
+        headlineSmall = typography.headlineSmall.copy(fontFamily = serif),
+        titleLarge = typography.titleLarge.copy(fontFamily = sansSerif),
+        titleMedium = typography.titleMedium.copy(fontFamily = sansSerif),
+        titleSmall = typography.titleSmall.copy(fontFamily = sansSerif),
+        bodyLarge = typography.bodyLarge.copy(fontFamily = sansSerif),
+        bodyMedium = typography.bodyMedium.copy(fontFamily = sansSerif),
+        bodySmall = typography.bodySmall.copy(fontFamily = sansSerif),
+        labelLarge = typography.labelLarge.copy(fontFamily = sansSerif),
+        labelMedium = typography.labelMedium.copy(fontFamily = sansSerif),
+        labelSmall = typography.labelSmall.copy(fontFamily = sansSerif),
     )
 }
 
