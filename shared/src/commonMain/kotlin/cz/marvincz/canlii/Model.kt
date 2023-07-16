@@ -11,6 +11,7 @@ internal data class Page(
 data class PageResult(
     val items: List<Summary>,
     val hasMoreResults: Boolean,
+    val nextPage: Int,
 )
 
 data class Summary(

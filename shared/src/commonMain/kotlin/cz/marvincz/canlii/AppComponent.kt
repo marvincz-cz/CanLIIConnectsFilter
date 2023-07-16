@@ -23,7 +23,8 @@ interface AppComponent {
     fun onLoad()
 }
 
-class DefaultAppComponent(componentContext: ComponentContext) : AppComponent, KoinComponent, ComponentContext by componentContext {
+class DefaultAppComponent(componentContext: ComponentContext) : AppComponent, KoinComponent,
+    ComponentContext by componentContext {
     private val client: Client = get()
     private val coroutineScope = coroutineScope()
     private var page = 1
@@ -46,16 +47,21 @@ class DefaultAppComponent(componentContext: ComponentContext) : AppComponent, Ko
         coroutineScope.launch {
             channel.send(AppComponent.UiState.Loading)
 
-            val (newItems, hasMoreResults) = try {
-                client.getPage(page)
+            val (newItems, hasMoreResults, nextPage) = try {
+                client.getPageFiltered(page, blacklist)
             } catch (e: Exception) {
                 channel.send(AppComponent.UiState.Error)
                 return@launch
             }
 
-            page += 1
+            page = nextPage
             _summaries.value = _summaries.value + newItems
             channel.send(AppComponent.UiState.Success(hasMoreResults))
         }
     }
+
+    private val blacklist = listOf(
+        "/en/publishers/216",
+        "/en/publishers/13",
+    )
 }
