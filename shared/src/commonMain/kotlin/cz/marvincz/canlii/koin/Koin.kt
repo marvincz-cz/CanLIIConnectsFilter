@@ -2,6 +2,7 @@ package cz.marvincz.canlii.koin
 
 import cz.marvincz.canlii.ktor.Client
 import cz.marvincz.canlii.parser.Parser
+import cz.marvincz.canlii.settings.Storage
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
@@ -9,7 +10,7 @@ import org.koin.dsl.module
 
 fun initKoin(appDeclaration: KoinAppDeclaration) {
     startKoin {
-        modules(commonModule(), )
+        modules(commonModule())
         appDeclaration()
     }
 }
@@ -17,4 +18,5 @@ fun initKoin(appDeclaration: KoinAppDeclaration) {
 private fun commonModule() = module {
     singleOf(::Parser)
     singleOf(::Client)
+    singleOf(::Storage)
 }

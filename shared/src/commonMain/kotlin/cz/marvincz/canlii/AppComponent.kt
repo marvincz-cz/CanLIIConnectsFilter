@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import cz.marvincz.canlii.ktor.Client
+import cz.marvincz.canlii.settings.Storage
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ interface AppComponent {
 class DefaultAppComponent(componentContext: ComponentContext) : AppComponent, KoinComponent,
     ComponentContext by componentContext {
     private val client: Client = get()
+    private val storage: Storage = get()
     private val coroutineScope = coroutineScope()
     private var page = 1
 
@@ -47,6 +49,8 @@ class DefaultAppComponent(componentContext: ComponentContext) : AppComponent, Ko
         coroutineScope.launch {
             channel.send(AppComponent.UiState.Loading)
 
+            val blacklist = storage.getBlacklist()
+
             val (newItems, hasMoreResults, nextPage) = try {
                 client.getPageFiltered(page, blacklist)
             } catch (e: Exception) {
@@ -59,9 +63,4 @@ class DefaultAppComponent(componentContext: ComponentContext) : AppComponent, Ko
             channel.send(AppComponent.UiState.Success(hasMoreResults))
         }
     }
-
-    private val blacklist = listOf(
-        "/en/publishers/216",
-        "/en/publishers/13",
-    )
 }

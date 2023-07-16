@@ -1,6 +1,7 @@
 package cz.marvincz.canlii.ktor
 
 import cz.marvincz.canlii.BASE_URL
+import cz.marvincz.canlii.Link
 import cz.marvincz.canlii.Page
 import cz.marvincz.canlii.PageResult
 import cz.marvincz.canlii.SEARCH_PATH
@@ -42,7 +43,7 @@ class Client : KoinComponent {
 
     suspend fun getPageFiltered(
         page: Int,
-        blacklist: List<String>,
+        blacklist: List<Link>,
     ): PageResult {
         var nextPage = page
         val newItems = mutableListOf<Summary>()
@@ -50,7 +51,7 @@ class Client : KoinComponent {
 
         do {
             val (items, hasMore) = getPage(nextPage)
-            newItems.addAll(items.filter { it.publisher.path !in blacklist })
+            newItems.addAll(items.filter { it.publisher !in blacklist && it.author !in blacklist })
             hasMoreResults = hasMore
             nextPage++
         } while (hasMoreResults && newItems.size < 5)

@@ -41,11 +41,12 @@ data class Summary(
     }
 }
 
+@Serializable
 data class Link(
     val title: String,
     val path: String,
 ) {
-    internal class Builder(val field: SummaryField? = null) {
+    internal class Builder(private val field: SummaryField? = null) {
         var title: String? = null
         var path: String? = null
 
