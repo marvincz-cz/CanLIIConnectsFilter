@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.arkivanov.decompose.defaultComponentContext
-import cz.marvincz.canlii.DefaultAppComponent
+import cz.marvincz.canlii.component.DefaultAppComponent
 import cz.marvincz.canlii.ui.App
 
 class MainActivity : AppCompatActivity() {

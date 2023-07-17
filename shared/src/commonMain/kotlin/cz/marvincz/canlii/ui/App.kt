@@ -1,18 +1,22 @@
 package cz.marvincz.canlii.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import cz.marvincz.canlii.AppComponent
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import cz.marvincz.canlii.component.AppComponent
 
 @Composable
 fun App(component: AppComponent) {
-    val uiState by component.uiState.subscribeAsState()
-    val summaries by component.summaries.subscribeAsState()
-
-    MainScreen(
-        uiState = uiState,
-        items = summaries,
-        onMore = component::onLoad,
-    )
+    AppTheme {
+        Children(
+            stack = component.stack,
+            animation = stackAnimation(slide()),
+        ) {
+            when (val child = it.instance) {
+                is AppComponent.Blacklist -> BlacklistRoute(child.component)
+                is AppComponent.Main -> MainRoute(child.component)
+            }
+        }
+    }
 }

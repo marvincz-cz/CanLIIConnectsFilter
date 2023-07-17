@@ -8,7 +8,7 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleController
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
-import cz.marvincz.canlii.DefaultAppComponent
+import cz.marvincz.canlii.component.DefaultAppComponent
 import cz.marvincz.canlii.koin.initKoin
 import cz.marvincz.canlii.ui.App
 

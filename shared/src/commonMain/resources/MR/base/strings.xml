@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="title">CanLII Connects Filtered</string>
+    <string name="title">CanLII Connects</string>
 
     <string name="button_load">Load more</string>
+    <string name="button_ok">OK</string>
+    <string name="button_reload">Reload</string>
+    <string name="button_back">Back</string>
+    <string name="button_block">Put %s on blacklist</string>
+
+    <string name="blacklist">Blacklist</string>
+    <string name="blacklist_remove">Remove</string>
 </resources>

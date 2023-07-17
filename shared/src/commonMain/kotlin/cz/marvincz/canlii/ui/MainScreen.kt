@@ -12,82 +12,127 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cz.marvincz.canlii.AppComponent
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import cz.marvincz.canlii.MR
 import cz.marvincz.canlii.Summary
-import cz.marvincz.canlii.toUrl
+import cz.marvincz.canlii.component.MainComponent
+import cz.marvincz.canlii.open
 import dev.icerock.moko.resources.compose.stringResource
+
+@Composable
+internal fun MainRoute(component: MainComponent) {
+    val uiState by component.uiState.subscribeAsState()
+    val summaries by component.summaries.subscribeAsState()
+
+    MainScreen(
+        uiState = uiState,
+        items = summaries,
+        onMore = component::onLoad,
+        onReload = component::onReload,
+        onBlock = component::onBlock,
+        onNavigateToBlacklist = component::onNavigateToBlacklist,
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun MainScreen(
-    uiState: AppComponent.UiState,
+private fun MainScreen(
+    uiState: MainComponent.UiState,
     items: List<Summary>,
     onMore: () -> Unit,
+    onReload: () -> Unit,
+    onBlock: (Summary) -> Unit,
+    onNavigateToBlacklist: () -> Unit,
 ) {
-    AppTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text(stringResource(MR.strings.title)) })
-            },
-            content = { paddingValues ->
-                val itemsWithHeaders = remember(items) { groupByDate(items) }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(MR.strings.title)) },
+                actions = {
+                    TextButton(
+                        onClick = onNavigateToBlacklist,
+                        colors = ButtonDefaults.textButtonColors(contentColor = LocalContentColor.current)
+                    ) { Text(stringResource(MR.strings.blacklist).uppercase()) }
+                    IconButton(
+                        onClick = onReload,
+                        enabled = uiState is MainComponent.UiState.Success,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = stringResource(MR.strings.button_reload),
+                        )
+                    }
+                }
+            )
+        },
+        content = { paddingValues ->
+            val itemsWithHeaders = remember(items) { groupByDate(items) }
 
-                LazyColumn(
-                    modifier = Modifier.padding(paddingValues),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(vertical = 16.dp)
-                ) {
-                    itemsWithHeaders.forEach { (dateHeader, list) ->
-                        stickyHeader(key = dateHeader) {
-                            HeaderItem(dateHeader)
-                        }
-                        items(items = list) {
-                            Item(it)
+            LazyColumn(
+                modifier = Modifier.padding(paddingValues),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                itemsWithHeaders.forEach { (dateHeader, list) ->
+                    stickyHeader(key = dateHeader) {
+                        HeaderItem(dateHeader)
+                    }
+                    items(
+                        items = list,
+                        key = { it.title.toString() },
+                    ) { Item(it, onBlock) }
+                }
+                if (uiState == MainComponent.UiState.Loading) {
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            CircularProgressIndicator()
                         }
                     }
-                    if (uiState == AppComponent.UiState.Loading) {
-                        item {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
+                }
+                if (uiState is MainComponent.UiState.Success && uiState.hasMoreResults) {
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            FilledTonalButton(
+                                onClick = onMore,
                             ) {
-                                CircularProgressIndicator()
-                            }
-                        }
-                    }
-                    if (uiState is AppComponent.UiState.Success && uiState.hasMoreResults) {
-                        item {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                FilledTonalButton(
-                                    onClick = onMore,
-                                ) {
-                                    Text(stringResource(MR.strings.button_load))
-                                }
+                                Text(stringResource(MR.strings.button_load))
                             }
                         }
                     }
                 }
             }
-        )
-    }
+        },
+    )
 }
 
 @Composable
@@ -103,13 +148,13 @@ private fun HeaderItem(header: String) {
 }
 
 @Composable
-internal fun Item(summary: Summary) {
+internal fun Item(summary: Summary, onBlock: (Summary) -> Unit) {
     val uriHandler = LocalUriHandler.current
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clickable { uriHandler.openUri(summary.title.toUrl()) },
+            .clickable { uriHandler.open(summary.title) },
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -121,19 +166,35 @@ internal fun Item(summary: Summary) {
                 fontWeight = FontWeight.SemiBold,
             )
             Text(
-                modifier = Modifier.clickable { uriHandler.openUri(summary.case.toUrl()) },
+                modifier = Modifier.clickable { uriHandler.open(summary.case) },
                 text = summary.case.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
             )
 
-            AuthorText(summary)
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.weight(1f)) {
+                    AuthorText(summary)
 
-            Text(
-                modifier = Modifier.padding(start = 16.dp),
-                text = stringResource(MR.plurals.concurs, summary.concurs, summary.concurs),
-                style = MaterialTheme.typography.bodyMedium,
-            )
+                    Text(
+                        modifier = Modifier.padding(start = 16.dp),
+                        text = stringResource(MR.plurals.concurs, summary.concurs, summary.concurs),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+                IconButton(
+                    modifier = Modifier.align(Alignment.Bottom),
+                    onClick = { onBlock(summary) },
+                ) {
+                    Icon(
+                        Icons.Outlined.Delete,
+                        contentDescription = stringResource(
+                            MR.strings.button_block,
+                            summary.publisher.title
+                        )
+                    )
+                }
+            }
         }
     }
 }

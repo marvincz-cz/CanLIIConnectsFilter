@@ -18,11 +18,10 @@ import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.unit.dp
 import cz.marvincz.canlii.Link
 import cz.marvincz.canlii.Summary
-import cz.marvincz.canlii.toUrl
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
-fun AuthorText(summary: Summary) {
+internal fun AuthorText(summary: Summary) {
     val uriHandler = LocalUriHandler.current
 
     val textStyle = MaterialTheme.typography.bodyLarge

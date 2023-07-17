@@ -1,5 +1,7 @@
 package cz.marvincz.canlii
 
+import io.ktor.http.URLBuilder
+import io.ktor.http.encodedPath
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -41,11 +43,21 @@ data class Summary(
     }
 }
 
+fun List<Summary>.filteredByBlacklist(blacklist: List<Link>): List<Summary> =
+    filter { summary -> blacklist.none { summary.publisher.path == it.path } }
+
 @Serializable
 data class Link(
     val title: String,
     val path: String,
 ) {
+    fun toUrl() = URLBuilder(BASE_URL).apply {
+        val urlPart = URLBuilder(path).build()
+
+        encodedPath = urlPart.encodedPath
+        parameters.appendAll(urlPart.parameters)
+    }.buildString()
+
     internal class Builder(private val field: SummaryField? = null) {
         var title: String? = null
         var path: String? = null

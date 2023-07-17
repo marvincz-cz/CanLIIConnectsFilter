@@ -6,6 +6,7 @@ import cz.marvincz.canlii.Page
 import cz.marvincz.canlii.PageResult
 import cz.marvincz.canlii.SEARCH_PATH
 import cz.marvincz.canlii.Summary
+import cz.marvincz.canlii.filteredByBlacklist
 import cz.marvincz.canlii.parser.Parser
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -51,7 +52,7 @@ class Client : KoinComponent {
 
         do {
             val (items, hasMore) = getPage(nextPage)
-            newItems.addAll(items.filter { it.publisher !in blacklist && it.author !in blacklist })
+            newItems.addAll(items.filteredByBlacklist(blacklist))
             hasMoreResults = hasMore
             nextPage++
         } while (hasMoreResults && newItems.size < 5)
