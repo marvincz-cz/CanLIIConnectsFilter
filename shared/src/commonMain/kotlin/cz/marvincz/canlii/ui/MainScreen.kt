@@ -176,11 +176,28 @@ internal fun Item(summary: Summary, onBlock: (Summary) -> Unit) {
                 Column(modifier = Modifier.weight(1f)) {
                     AuthorText(summary)
 
-                    Text(
+                    Row(
                         modifier = Modifier.padding(start = 16.dp),
-                        text = stringResource(MR.plurals.concurs, summary.concurs, summary.concurs),
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        Text(
+                            text = stringResource(
+                                MR.plurals.concurs,
+                                summary.concurs,
+                                summary.concurs
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+
+                        Text(
+                            text = stringResource(
+                                MR.plurals.comments,
+                                summary.comments,
+                                summary.comments
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
                 }
                 IconButton(
                     modifier = Modifier.align(Alignment.Bottom),

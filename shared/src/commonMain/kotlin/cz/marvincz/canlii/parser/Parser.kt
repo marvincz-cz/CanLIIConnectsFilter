@@ -50,8 +50,17 @@ class Parser {
                 link?.apply { title = text.trim() }?.build(summary)
 
                 val node = stack.toStack()
-                if (node.endsWith("stats")) text.trim().toIntOrNull()?.let {
-                    summary.concurs = it
+                if (node.endsWith("stats")) {
+                    concursRegex.matchEntire(text)?.destructured?.let { (concurs) ->
+                        concurs.toIntOrNull()?.let {
+                            summary.concurs = it
+                        }
+                    }
+                    commentsRegex.matchEntire(text)?.destructured?.let { (comments) ->
+                        comments.toIntOrNull()?.let {
+                            summary.comments = it
+                        }
+                    }
                 } else if (node.endsWith("date")) {
                     summary.date = text.trim()
                 }
@@ -66,3 +75,5 @@ private fun List<String?>.toStack() = filterNotNull().joinToString(".")
 
 // auto-closing tags were causing some crashes and we don't need them
 private val clearRegex = Regex("</?\\s?(?:hr|br|if)\\s?/?>")
+private val concursRegex = Regex("(\\d+) Concurs?")
+private val commentsRegex = Regex("(\\d+) Comments?")

@@ -22,6 +22,7 @@ data class Summary(
     val author: Link,
     val publisher: Link,
     val concurs: Int,
+    val comments: Int,
     val date: String,
 ) {
     internal class Builder {
@@ -30,6 +31,7 @@ data class Summary(
         var author: Link? = null
         var publisher: Link? = null
         var concurs: Int = 0
+        var comments: Int = 0
         var date: String? = null
 
         fun build() = Summary(
@@ -38,6 +40,7 @@ data class Summary(
             author = requireNotNull(author),
             publisher = requireNotNull(publisher ?: author),
             concurs = concurs,
+            comments = comments,
             date = requireNotNull(date),
         )
     }
@@ -80,5 +83,5 @@ data class Link(
 }
 
 internal enum class SummaryField {
-    TITLE, CASE, AUTHOR, PUBLISHER, CONCURS, DATE
+    TITLE, CASE, AUTHOR, PUBLISHER
 }

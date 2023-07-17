@@ -10,6 +10,7 @@ class BlacklistTest {
         author = Link("", ""),
         publisher = Link("", ""),
         concurs = 0,
+        comments = 0,
         date = "",
     )
 
