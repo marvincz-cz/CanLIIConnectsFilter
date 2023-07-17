@@ -16,6 +16,7 @@ private fun ItemPreview() {
                 author = Link("John Polyzogopoulos and Ines Ferreira", ""),
                 publisher = Link("Blaney McMurtry LLP", ""),
                 concurs = 0,
+                comments = 0,
                 date = "Jul 11, 2023",
             ),
             onBlock = {},
