@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <plural name="concurs">
+        <item quantity="one">%s concur</item>
+        <item quantity="other">%s concurs</item>
+    </plural>
+    <plural name="comments">
+        <item quantity="one">%s comment</item>
+        <item quantity="other">%s comments</item>
+    </plural>
+</resources>

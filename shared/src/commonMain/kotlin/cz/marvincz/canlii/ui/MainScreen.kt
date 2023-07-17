@@ -27,8 +27,10 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cz.marvincz.canlii.AppComponent
+import cz.marvincz.canlii.MR
 import cz.marvincz.canlii.Summary
 import cz.marvincz.canlii.toUrl
+import dev.icerock.moko.resources.compose.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -40,7 +42,7 @@ internal fun MainScreen(
     AppTheme {
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("CanLII Connects Filtered") })
+                TopAppBar(title = { Text(stringResource(MR.strings.title)) })
             },
             content = { paddingValues ->
                 val itemsWithHeaders = remember(items) { groupByDate(items) }
@@ -77,7 +79,7 @@ internal fun MainScreen(
                                 FilledTonalButton(
                                     onClick = onMore,
                                 ) {
-                                    Text("Load more")
+                                    Text(stringResource(MR.strings.button_load))
                                 }
                             }
                         }
@@ -129,7 +131,7 @@ internal fun Item(summary: Summary) {
 
             Text(
                 modifier = Modifier.padding(start = 16.dp),
-                text = "${summary.concurs} Concurs",
+                text = stringResource(MR.plurals.concurs, summary.concurs, summary.concurs),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }

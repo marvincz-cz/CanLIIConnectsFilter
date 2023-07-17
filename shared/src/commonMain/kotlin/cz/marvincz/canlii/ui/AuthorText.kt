@@ -53,7 +53,6 @@ private fun authorString(
     color: Color,
     linkColor: Color,
 ) = buildAnnotatedString {
-
     append("by ".annotatedWithStyle(textStyle, color))
     appendClickableText(summary.author, textStyle, linkColor)
     if (summary.publisher != summary.author) {

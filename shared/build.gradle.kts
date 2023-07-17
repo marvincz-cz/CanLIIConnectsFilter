@@ -48,6 +48,7 @@ kotlin {
                 api("io.insert-koin:koin-core:$koinVersion")
                 implementation("io.insert-koin:koin-compose:1.0.3")
                 api("dev.icerock.moko:resources:0.23.0")
+                api("dev.icerock.moko:resources-compose:0.23.0")
 
                 api("com.arkivanov.decompose:decompose:2.0.0-compose-experimental")
                 api("com.arkivanov.decompose:extensions-compose-jetbrains:2.0.0-compose-experimental")
