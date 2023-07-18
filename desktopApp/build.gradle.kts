@@ -23,8 +23,14 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "MarvinczCanliiDesktop"
+            packageName = "CanLII Connects no-AI"
             packageVersion = "1.0.0"
+
+            windows {
+                upgradeUuid = "b60b3977-0763-4adc-a0bb-15021b69dd3f"
+                perUserInstall = true
+                menu = true
+            }
         }
     }
 }

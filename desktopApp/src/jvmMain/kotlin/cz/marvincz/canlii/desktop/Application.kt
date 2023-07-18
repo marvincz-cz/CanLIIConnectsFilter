@@ -8,9 +8,11 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleController
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
+import cz.marvincz.canlii.MR
 import cz.marvincz.canlii.component.DefaultAppComponent
 import cz.marvincz.canlii.koin.initKoin
 import cz.marvincz.canlii.ui.App
+import dev.icerock.moko.resources.compose.stringResource
 
 @OptIn(ExperimentalDecomposeApi::class)
 fun main() {
@@ -29,7 +31,7 @@ fun main() {
         val windowState = rememberWindowState()
         LifecycleController(lifecycle, windowState)
 
-        Window(onCloseRequest = ::exitApplication) {
+        Window(onCloseRequest = ::exitApplication, title = stringResource(MR.strings.title)) {
             App(component = component)
         }
     }
